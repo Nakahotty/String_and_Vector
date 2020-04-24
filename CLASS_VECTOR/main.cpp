@@ -1,92 +1,42 @@
-#define DOCTEST_CONFIG_IMPLEMENT
-#include "doctest.h"
-#include <iostream>
-#include "Vector.cpp"
+#include "Vector.h"
 
 using namespace std;
 
-TEST_CASE("Push test")
-{
-	Vector<int> v;
-	v.push(13);
-	v.push(553);
-	v.push(1);
-	Vector<int> c;
-	c.push(13);
-	c.push(553);
-	c.push(1);
-
-	CHECK(v[0] == 1);
-	CHECK(v[1] == 553);
-	CHECK(c[2] == 13);
-}
-
-TEST_CASE("Modify value test")
+int main()
 {
 	Vector<int> v;
 	v.push_back(1);
 	v.push_back(2);
 	v.push_back(3);
 
-	v[0] = 6;
+	cout << "Size: " << v.getSize() << endl;
+	v.pop_front();
+	v.print();
 
-	CHECK(v[0] == 6);
-	CHECK(v[1] == 2);
-	CHECK(v[2] == 3);
-}
+	Vector<int> v2;
+	cout << v2.isEmpty() << endl;
+	v2.push_back(4);
+	v2.push_back(5);
 
-TEST_CASE("Equal vectors test")
-{
-	Vector<double> a,b;
-	a.push(4.5);
-	b.push(4.5);
-	
-	CHECK(a == b);
-}
+	Vector<int> mix;
+	mix += v2;
+	cout << mix << endl;
 
-TEST_CASE("Addition test")
-{
-	Vector<int> a;
-	a.push_back(1);
-	a.push_back(2);
-	a.push_back(3);
+	Vector<int> PUSHAT;
+	PUSHAT.push_back(1);
+	PUSHAT.push_back(2);
+	PUSHAT.push_back(3);
 
-	Vector<int> b(a);
-	b += 4;
+	PUSHAT.push_at(456, 2);
+	cout << PUSHAT << endl;
 
-	CHECK(a + 4 == b);
-}
+	Vector<int> v3;
+	v3.push_back(100);
+	v3.push_back(200);
+	v3.push_back(300);
+	v3.push_back(400);
+	v3.pop_at(2);
 
-TEST_CASE("Equality test")
-{
-	Vector<int> a;
-	a.push_back(2);
-	a.push_back(2);
-	a.push_back(2);
-
-	Vector<int> b(a);
-	b += 44;
-
-	CHECK(a != b);
-}
-
-TEST_CASE("Length test")
-{
-	Vector<int> a;
-	a.push_back(1);
-	a.push_back(1);
-	a.push_back(1);
-
-	Vector<int> b;
-	b.push_back(3);
-	b.push_back(3);
-	b.push_back(3);
-
-	CHECK(a.length() == b.length());
-}
-
-int main()
-{
-	// Run doctest
-	doctest::Context().run();
+	v3.pop_by_data(300);
+	cout << v3;
 }
