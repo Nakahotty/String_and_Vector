@@ -32,7 +32,9 @@ private:
 
 	void resize()
 	{
-		this->capacity *= 2;
+		if (this->size >= this->capacity)
+			this->capacity *= 2;
+
 		T* bigger = new T[this->capacity];
 
 		for (int i = 0; i < this->size; i++)
@@ -56,6 +58,7 @@ public:
 	void push_at(const T& el, int position);
 	void pop_at(int position);
 	void pop_by_data(const T& el);
+	inline bool contains(const T& el);
 
 	int getSize() const;
 	int getCapacity() const;
@@ -204,6 +207,17 @@ void Vector<T>::pop_by_data(const T& el)
 		if (this->data[i] == el)
 			this->pop_at(i + 1);
 	}
+}
+
+template<typename T>
+bool Vector<T>::contains(const T& el)
+{
+	for (int i = 0; i < this->size; i++) {
+		if (this->data[i] == el)
+			return true;
+	}
+
+	return false;
 }
 
 template <typename T>
