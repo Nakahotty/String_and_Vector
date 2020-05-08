@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstring>
 #include <fstream>
+#include <stdlib.h> 
 #include "String.h"
 
 String::String()
@@ -23,13 +24,13 @@ String::String(char c)
 String::String(const String& other)
 {
     str = new char[other.length() + 1];
-    strcpy_s(str, other.length() + 1 , other.str);
+    strcpy_s(str, other.length() + 1, other.str);
 }
 
 void String::init(const char* s)
 {
     str = new char[strlen(s) + 1];
-    strcpy_s(str, strlen(s) + 1 , s);
+    strcpy_s(str, strlen(s) + 1, s);
 }
 
 //s1.print();
@@ -50,7 +51,7 @@ String String::operator+ (char c)
     //this->str -----> a b c \0 ....  | + z
     result.str = new char[length() + 1 + 1];
     //X X X X X
-    strcpy_s(result.str, length() + 2 , str);
+    strcpy_s(result.str, length() + 2, str);
     //a b c \0 X
     result.str[this->length()] = c;
     //a b c z X
@@ -84,6 +85,11 @@ size_t String::length() const
 {
     return strlen(str);
 }
+
+char String::operator[] (size_t i) const {
+    return str[i];
+}
+
 char& String::operator[] (size_t i)
 {
     return str[i];
@@ -136,6 +142,22 @@ void String::toLower()
     }
 }
 
+int String::toInteger() {
+    int number = 0;
+    number = std::atoi(this->str);
+
+    /*
+    for (size_t i = 0; this->str[i] != '\0'; i++) {
+
+        if (str[i] >= '0' && str[i] <= '9') {
+            int x = (int)(str[i]);
+            number += x - 48;
+        }
+    }*/
+
+    return number;
+}
+
 std::ostream& operator<< (std::ostream& out, String s)
 {
     out << s.str;
@@ -144,6 +166,7 @@ std::ostream& operator<< (std::ostream& out, String s)
 
 std::istream& operator>> (std::istream& in, String& s)
 {
+    s = "";
     char c;
     do
     {

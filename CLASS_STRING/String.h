@@ -20,6 +20,7 @@ public:
     bool operator== (String other);
     bool operator< (String other);
     size_t length() const;
+    char operator[] (size_t i) const;
     char& operator[] (size_t i);
     String operator= (char c);
 
@@ -27,6 +28,7 @@ public:
     bool operator!= (String& other);
     bool contains(String& other);
     void toLower();
+    int toInteger();
 };
 
 std::ostream& operator<< (std::ostream& out, String s);
