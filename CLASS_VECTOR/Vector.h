@@ -12,8 +12,7 @@ private:
 
 	void copy(const Vector& other)
 	{
-		if (this->capacity <= other.capacity)
-			capacity *= 2;
+		this->capacity = other.capacity;
 
 		this->data = new T[capacity];
 
@@ -58,7 +57,7 @@ public:
 	void push_at(const T& el, int position);
 	void pop_at(int position);
 	void pop_by_data(const T& el);
-	inline bool contains(const T& el);
+	bool contains(const T& el);
 
 	int getSize() const;
 	int getCapacity() const;
@@ -68,7 +67,7 @@ public:
 	Vector<T> operator +(const Vector& other);
 	Vector<T>& operator +=(const Vector& other);
 	T& operator [](int i);
-	T operator [] (int i) const;
+	const T& operator [] (int i) const;
 	bool operator==(const Vector& other);
 	bool operator!=(const Vector& other);
 };
@@ -108,18 +107,12 @@ Vector<T>::~Vector()
 template <typename T>
 void Vector<T>::push_back(const T& el)
 {
-	this->resize();
-	T* bigger = new T[this->size + 1];
-
-	for (int i = 0; i < this->size; i++)
-	{
-		bigger[i] = this->data[i];
+	if (size == capacity || this->data == nullptr) {
+		resize();
 	}
 
-	bigger[this->size] = el;
-	++this->size;
-	this->erase();
-	this->data = bigger;
+	this->data[size] = el;
+	this->size++;
 }
 
 template <typename T>
@@ -302,7 +295,7 @@ T& Vector<T>::operator [](int i)
 }
 
 template <typename T>
-T Vector<T>::operator[] (int i) const
+const T& Vector<T>::operator[] (int i) const
 {
 	return data[i];
 }
