@@ -10,6 +10,7 @@ private:
 	T* data;
 	int size, capacity;
 
+
 	void copy(const Vector& other)
 	{
 		this->capacity = other.capacity;
@@ -50,6 +51,9 @@ public:
 	Vector& operator=(const Vector& other);
 	~Vector();
 
+	// ѕоле на класа - типа на елементите се пази в VALUE TYPE
+	using value_type = T;
+
 	void push_back(const T& el);
 	void pop_back();
 	void push_front(const T& el);
@@ -70,6 +74,22 @@ public:
 	const T& operator [] (int i) const;
 	bool operator==(const Vector& other);
 	bool operator!=(const Vector& other);
+
+	class Iterator
+	{
+	public:
+		Iterator(size_t pos, Vector& _vector);
+		bool operator!=(const Iterator& it);
+		Iterator& operator++();
+		T& operator*();
+
+	private:
+		size_t index;
+		Vector& vector;
+	};
+
+	Iterator begin();
+	Iterator end();
 };
 
 template <typename T>
@@ -133,7 +153,10 @@ void Vector<T>::pop_back()
 template <typename T>
 void Vector<T>::push_front(const T& el)
 {
-	this->resize();
+	if (size == capacity || this->data == nullptr) {
+		resize();
+	}
+
 	T* bigger = new T[this->size + 1];
 
 	for (int i = 0; i < this->size; i++)
@@ -165,7 +188,9 @@ void Vector<T>::pop_front()
 template <typename T>
 void Vector<T>::push_at(const T& el, int position)
 {
-	this->resize();
+	if (size == capacity || this->data == nullptr) {
+		resize();
+	}
 
 	if (this->size >= position)
 	{
@@ -321,6 +346,7 @@ bool Vector<T>::operator!=(const Vector& other)
 	return !(this == &other);
 }
 
+
 template <typename T>
 ostream& operator<<(ostream& stream, Vector<T> v)
 {
@@ -330,4 +356,46 @@ ostream& operator<<(ostream& stream, Vector<T> v)
 	}
 
 	return stream;
+}
+
+// For Iterator
+
+template <class T>
+Vector<T>::Iterator::Iterator(size_t pos, Vector<T>& _vector) : index(pos), vector(_vector) {}
+
+template<typename T>
+typename Vector<T>::Iterator Vector<T>::begin()
+{
+	return typename Vector<T>::Iterator(0, *this);
+}
+
+template<typename T>
+typename Vector<T>::Iterator Vector<T>::end()
+{
+	return typename Vector<T>::Iterator(size, *this);
+}
+
+template <typename T>
+bool Vector<T>::Iterator::operator!=(const typename Vector<T>::Iterator& it) {
+	// data?
+	return index != it.index;
+}
+
+template <typename T>
+typename Vector<T>::Iterator& Vector<T>::Iterator::operator++() {
+	if (index >= vector.getSize()) {
+		throw std::out_of_range("Going past end of vector!");
+	}
+
+	++index;
+	return *this;
+}
+
+template <typename T>
+T& Vector<T>::Iterator::operator*() {
+	if (index >= vector.getSize()) {
+		throw std::out_of_range("Reading past end of vector!");
+	}
+
+	return vector[index];
 }
