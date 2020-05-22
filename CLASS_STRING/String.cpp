@@ -33,7 +33,7 @@ void String::init(const char* s)
     strcpy_s(str, strlen(s) + 1, s);
 }
 
-//s1.print();
+
 void String::print()
 {
     std::cout << str << std::endl;
@@ -48,15 +48,12 @@ String String::operator+ (char c)
 {
 
     String result;
-    //this->str -----> a b c \0 ....  | + z
+
     result.str = new char[length() + 1 + 1];
-    //X X X X X
     strcpy_s(result.str, length() + 2, str);
-    //a b c \0 X
+
     result.str[this->length()] = c;
-    //a b c z X
     result.str[this->length() + 1] = 0;
-    //newBuffer ---->  a b c z \0
 
     return result;
 
@@ -72,7 +69,8 @@ String String::operator+ (String other)
 
     return result;
 }
-//if (s1 == s2)
+
+
 bool String::operator== (String other)
 {
     return strcmp(str, other.str) == 0;
@@ -95,8 +93,6 @@ char& String::operator[] (size_t i)
     return str[i];
 }
 
-//result = '0' + x;
-//result.operator=('0'+x)
 String String::operator= (char c)
 {
     str = new char[2];
@@ -145,15 +141,6 @@ void String::toLower()
 int String::toInteger() {
     int number = 0;
     number = std::atoi(this->str);
-
-    /*
-    for (size_t i = 0; this->str[i] != '\0'; i++) {
-
-        if (str[i] >= '0' && str[i] <= '9') {
-            int x = (int)(str[i]);
-            number += x - 48;
-        }
-    }*/
 
     return number;
 }

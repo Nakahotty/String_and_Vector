@@ -5,8 +5,9 @@
 
 class String
 {
-public:
+private:
     char* str;
+public:
 
     String();
     String(const char* s);
